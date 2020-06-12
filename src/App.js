@@ -1,25 +1,61 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import About from './pages/About'
+import Home from './pages/Home'
+import Testimonials from './pages/Testimonials'
+import Container from '@material-ui/core/Container'
+import {
+  BrowserRouter,
+  Switch,
+  Redirect,
+  Route
+} from 'react-router-dom'
+import Layout from './Layout'
+
+const routes = [
+  {
+    exact: true,
+    path: '/',
+    component: Home
+  },
+  {
+    exact: true,
+    path: '/about',
+    component: About
+  },
+  {
+    exact: true,
+    path: '/testimonials',
+    component: Testimonials
+  },
+  {
+    path: '*',
+    component: () => <Redirect to="/" />
+  }
+];
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Layout>
+        <Container maxWidth="md">
+          <Switch>
+            {routes.map((route, i) => {
+              const Component = route.component;
+
+              return (
+                <Route
+                  key={i}
+                  path={route.path}
+                  exact={route.exact}
+                  render={(props) => <Component {...props} />}
+                />
+              );
+            })}
+          </Switch>
+        </Container>
+      </Layout>
+    </BrowserRouter>
   );
 }
 
